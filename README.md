@@ -1,6 +1,6 @@
-# NyxWeb [SERVER]
+# ANWeb [SERVER]
 
-`NyxWeb muonline website server-side written in typescript`
+`ANWeb muonline website server-side written in typescript`
 
 # Environmental variables
 
@@ -34,10 +34,10 @@ ADD
   [reg_ip] [varchar](30) NULL;
 ```
 
-### `_nyxConfig`
+### `_anwConfig`
 
 ```
-CREATE TABLE [dbo].[_nyxConfig](
+CREATE TABLE [dbo].[_anwConfig](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[name] [varchar](50) NULL,
 	[value] [text] NULL
@@ -80,43 +80,43 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: nyx/client
+    image: anw/client
     ports:
       - '80:80'
     depends_on:
       - server
-    container_name: nyxweb_client
+    container_name: anw_client
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: nyx/server
+    image: anw/server
     ports:
       - '2000:80'
     networks:
-      - nyx
+      - anw
     depends_on:
       - db
-    container_name: nyxweb_server
+    container_name: anw_server
   db:
     build:
       context: ./server
       dockerfile: Dockerfile-db
-    image: nyx/db
+    image: anw/db
     ports:
       - '1433:1433'
     networks:
-      - nyx
-    container_name: nyxweb_db
+      - anw
+    container_name: anw_db
 networks:
-  nyx:
+  anw:
     external: true
 ```
 
 `now we create a new network on which our containers will run`
 
 ```
-docker network create nyx
+docker network create anw
 ```
 
 `with this command we "compose" a new docker build /we start our app/`
@@ -140,15 +140,15 @@ in case you want to only create the SQLServer docker container and run the serve
 ##### make sure to fill in your sql password
 
 ```
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=thepassword.is1" -e "MSSQL_PID=Express" --name nyxweb_db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=thepassword.is1" -e "MSSQL_PID=Express" --name anw_db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 ## restore database
 
-`first we create a 'backup' folder in nyxweb_db docker container`
+`first we create a 'backup' folder in anw_db docker container`
 
 ```
-docker exec -it nyxweb_db mkdir /var/opt/mssql/backup
+docker exec -it anw_db mkdir /var/opt/mssql/backup
 ```
 
 `then we copy 'MuOnline.bak' into our docker container`
@@ -156,11 +156,11 @@ docker exec -it nyxweb_db mkdir /var/opt/mssql/backup
 #### make sure you specify the right path to your MuOnline.bak file
 
 ```
-docker cp "D:\MuOnline.bak" nyxweb_db:/var/opt/mssql/backup
+docker cp "D:\MuOnline.bak" anw_db:/var/opt/mssql/backup
 ```
 
 `now we finally restore the MuOnline.bak file`
 
 ```
-docker exec -it nyxweb_db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "thepassword.is1" -Q "RESTORE DATABASE MuOnline FROM DISK = '/var/opt/mssql/backup/MuOnline.bak' WITH MOVE 'MuOnline_Data' TO '/var/opt/mssql/data/MuOnline.mdf', MOVE 'MuOnline_Log' TO '/var/opt/mssql/data/MuOnline_Log.ldf'"
+docker exec -it anw_db /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "thepassword.is1" -Q "RESTORE DATABASE MuOnline FROM DISK = '/var/opt/mssql/backup/MuOnline.bak' WITH MOVE 'MuOnline_Data' TO '/var/opt/mssql/data/MuOnline.mdf', MOVE 'MuOnline_Log' TO '/var/opt/mssql/data/MuOnline_Log.ldf'"
 ```

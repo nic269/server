@@ -10,7 +10,7 @@ import {
 import Character from './Character';
 
 @Table
-export default class _nyxMarket extends Model<_nyxMarket> {
+export default class _anwMarket extends Model<_anwMarket> {
   @PrimaryKey
   @Column
   index: number;

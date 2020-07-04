@@ -9,12 +9,9 @@ import model from '../../../db/models';
 
 const getOnline = async (req: Request, res: Response) => {
   try {
-    const account = await model.MEMB_INFO.findOne({
+    const account = await model.T_VIPList.findOne({
       where: {
-        memb___id: req.username
-      },
-      attributes: {
-        exclude: ['memb__pwd']
+        AccountID: req.username
       }
     });
 

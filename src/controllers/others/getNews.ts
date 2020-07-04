@@ -9,7 +9,7 @@ import model from '../../db/models';
 
 const getNews = async (req: Request, res: Response) => {
   try {
-    const news = await model._nyxNews.findAll({
+    const news = await model._anwNews.findAll({
       order: [['timestamp', 'DESC']],
       attributes: {
         exclude: ['account', 'ip']

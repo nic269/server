@@ -8,9 +8,10 @@ import {
 } from 'sequelize-typescript';
 
 // Models
-import _nyxResources from './_nyxResources';
+import _anwResources from './_anwResources';
 import MEMB_STAT from './MEMB_STAT';
 import warehouse from './warehouse';
+import T_VIPList from './T_VIPList';
 
 @Table
 export default class MEMB_INFO extends Model<MEMB_INFO> {
@@ -39,14 +40,6 @@ export default class MEMB_INFO extends Model<MEMB_INFO> {
   @Column
   ctl1_code: number;
 
-  @Default(0)
-  @Column
-  IsVip: number;
-
-  @Default(0)
-  @Column
-  VipExpirationTime: number;
-
   @Column
   reg_ip: string;
 
@@ -56,11 +49,11 @@ export default class MEMB_INFO extends Model<MEMB_INFO> {
   @Column
   admin_lvl: number;
 
-  @HasOne(() => _nyxResources, {
+  @HasOne(() => _anwResources, {
     sourceKey: 'memb___id',
     foreignKey: 'account'
   })
-  resources: _nyxResources;
+  resources: _anwResources;
 
   @HasOne(() => MEMB_STAT, {
     sourceKey: 'memb___id',
@@ -73,4 +66,10 @@ export default class MEMB_INFO extends Model<MEMB_INFO> {
     foreignKey: 'AccountID'
   })
   warehouse: warehouse;
+
+  @HasOne(() => T_VIPList, {
+    sourceKey: 'memb___id',
+    foreignKey: 'AccountID',
+  })
+  vip_info: T_VIPList;
 }

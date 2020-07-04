@@ -17,7 +17,7 @@ const getLogs = async (req: Request, res: Response) => {
       where = { ...where, module: req.query.category };
     }
 
-    const result = await model._nyxAccountLogs.findAndCountAll({
+    const result = await model._anwAccountLogs.findAndCountAll({
       where,
       limit: perPage,
       offset: (page - 1) * perPage,

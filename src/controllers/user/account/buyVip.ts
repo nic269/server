@@ -1,5 +1,7 @@
 // Types
 import { Request, Response } from 'express';
+import moment from 'moment';
+import momentTz from 'moment-timezone';
 
 // Tools
 import logger from '../../../tools/logger';
@@ -8,32 +10,31 @@ import { saveLog } from '../../../tools/user/logs';
 // Models
 import model from '../../../db/models';
 
+momentTz.tz.setDefault('Atlantic/Azores');
+
 const buyVip = async (req: Request, res: Response) => {
   try {
-    const { vipDays } = req.body;
+    const { vipDays, type } = req.body;
 
-    const account = await model.MEMB_INFO.findOne({
+    const vipInfo = await model.T_VIPList.findOne({
       where: {
-        memb___id: req.username
+        AccountID: req.username
       },
-      attributes: {
-        exclude: ['memb__pwd']
-      }
     });
 
-    const resources = await model._nyxResources.findOne({
+    const resources = await model._anwResources.findOne({
       where: {
         account: req.username
       }
     });
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: {
         name: 'vip'
       }
     });
 
-    if (!account) {
+    if (!vipInfo) {
       return res.status(400).json({ error: 'Could not read user data' });
     }
 
@@ -47,7 +48,8 @@ const buyVip = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Could not find config for VIP' });
     }
 
-    const credits = vipDays * Number(config.value);
+    const vipTypeBuffer = type || vipInfo.Type;
+    const credits = vipDays * vipTypeBuffer * Number(config.value);
 
     if (resources.credits < credits) {
       return res.status(400).json({
@@ -57,15 +59,16 @@ const buyVip = async (req: Request, res: Response) => {
 
     resources.credits -= credits;
 
-    const time = vipDays * 24 * 60 * 60;
-    account.VipExpirationTime = account.IsVip
-      ? account.VipExpirationTime + time
-      : Math.floor(Date.now() / 1000) + time;
-    account.IsVip = 1;
+    const newVipDate = moment(vipInfo.Date).isAfter(moment())
+      ? moment(vipInfo.Date).add(vipDays, 'days')
+      : moment().add(vipDays, 'days');
+
+    vipInfo.Date = newVipDate.format('YYYY-MM-DD HH:mm:ss');
+    vipInfo.Type = type;
 
     await Promise.all([
       resources.save(),
-      account.save(),
+      vipInfo.save(),
       saveLog({
         account: req.username,
         module: 'vip',
@@ -76,7 +79,7 @@ const buyVip = async (req: Request, res: Response) => {
 
     res.json({
       success: 'You purchased VIP successfully',
-      info: account,
+      info: vipInfo,
       credits: resources.credits
     });
   } catch (error) {

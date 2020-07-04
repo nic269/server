@@ -36,7 +36,7 @@ const changeClass = async (req: Request, res: Response) => {
         .json({ error: `You are already this class, ${character.Name}.` });
     }
 
-    const _config = await model._nyxConfig.findOne({
+    const _config = await model._anwConfig.findOne({
       where: { name: 'change_class' }
     });
 
@@ -87,7 +87,7 @@ const changeClass = async (req: Request, res: Response) => {
         .json({ error: `You have to be Offline to change your class.` });
     }
 
-    const resources = await model._nyxResources.findOne({
+    const resources = await model._anwResources.findOne({
       where: { account: req.username }
     });
 

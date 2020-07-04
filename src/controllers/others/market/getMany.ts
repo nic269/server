@@ -13,7 +13,7 @@ const getMany = async (req: Request, res: Response) => {
     page = Number(page);
     perPage = Number(perPage);
 
-    const items = await model._nyxMarket.findAll({
+    const items = await model._anwMarket.findAll({
       limit: perPage,
       offset: (page - 1) * perPage,
       order: [['timestamp', 'DESC']],
@@ -35,7 +35,7 @@ const getMany = async (req: Request, res: Response) => {
       ]
     });
 
-    const count = await model._nyxMarket.count();
+    const count = await model._anwMarket.count();
 
     res.json({
       list: items,

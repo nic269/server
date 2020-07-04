@@ -16,7 +16,7 @@ const updateConfig = async (req: Request, res: Response) => {
 
     const { configName, updated } = req.body;
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: { name: configName }
     });
 

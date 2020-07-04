@@ -8,12 +8,13 @@ import { saveLog } from '../../../../tools/user/logs';
 
 // Models
 import model from '../../../../db/models';
+const ITEM_INDICATOR = 64; // lower version use 32
 
 const moveItem = async (req: Request, res: Response) => {
   try {
     const { itemSlot, newSlot, from, to } = req.body;
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: { name: 'itemsList' }
     });
 
@@ -27,14 +28,14 @@ const moveItem = async (req: Request, res: Response) => {
       where: { AccountID: req.username }
     });
 
-    const storage = await model._nyxResources.findOne({
+    const storage = await model._anwResources.findOne({
       where: { account: req.username }
     });
 
     if (!warehouse) {
       warehouse = new model.warehouse();
       warehouse.AccountID = req.username;
-      warehouse.Items = Buffer.from('f'.repeat(3840), 'hex');
+      warehouse.Items = Buffer.from('f'.repeat(7680), 'hex');
       warehouse.pw = 0;
       await warehouse.save();
     }
@@ -44,22 +45,22 @@ const moveItem = async (req: Request, res: Response) => {
 
     // Moving the item
     const item = (from === 'warehouse' ? warehouseItems : storageItems).substr(
-      itemSlot * 32,
-      32
+      itemSlot * ITEM_INDICATOR,
+      ITEM_INDICATOR
     );
 
     if (
-      (warehouseItems.length / 32) % 1 !== 0 ||
-      (storageItems.length / 32) % 1 !== 0 ||
-      item.length !== 32 ||
-      item.toLowerCase() === 'f'.repeat(32)
+      (warehouseItems.length / ITEM_INDICATOR) % 1 !== 0 ||
+      (storageItems.length / ITEM_INDICATOR) % 1 !== 0 ||
+      item.length !== ITEM_INDICATOR ||
+      item.toLowerCase() === 'f'.repeat(ITEM_INDICATOR)
     ) {
       return res.status(400).json({
         error: 'This item seems to be already moved.'
       });
     }
 
-    if (to === 'storage' && storageItems.length / 32 >= 165) {
+    if (to === 'storage' && storageItems.length / ITEM_INDICATOR >= 165) {
       return res.status(400).json({ error: 'Your Storage is full' });
     }
 
@@ -82,22 +83,22 @@ const moveItem = async (req: Request, res: Response) => {
     let updatedStorage = storageItems;
 
     if (from === 'warehouse') {
-      updatedWarehouse = warehouseItems.replace(item, 'f'.repeat(32));
+      updatedWarehouse = warehouseItems.replace(item, 'f'.repeat(ITEM_INDICATOR));
 
       if (to === 'storage') {
         updatedStorage = storageItems + item;
       } else {
         updatedWarehouse =
-          updatedWarehouse.slice(0, newSlot * 32) +
+          updatedWarehouse.slice(0, newSlot * ITEM_INDICATOR) +
           item +
-          updatedWarehouse.slice((newSlot + 1) * 32);
+          updatedWarehouse.slice((newSlot + 1) * ITEM_INDICATOR);
       }
     } else {
       if (to === 'warehouse') {
         updatedWarehouse =
-          warehouseItems.slice(0, newSlot * 32) +
+          warehouseItems.slice(0, newSlot * ITEM_INDICATOR) +
           item +
-          warehouseItems.slice((newSlot + 1) * 32);
+          warehouseItems.slice((newSlot + 1) * ITEM_INDICATOR);
 
         updatedStorage = storageItems.replace(item, '');
       } else {

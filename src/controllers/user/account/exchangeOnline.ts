@@ -10,7 +10,7 @@ import model from '../../../db/models';
 
 const exchangeOnline = async (req: Request, res: Response) => {
   try {
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: {
         name: 'online_time'
       }
@@ -28,7 +28,7 @@ const exchangeOnline = async (req: Request, res: Response) => {
       }
     });
 
-    const resources = await model._nyxResources.findOne({
+    const resources = await model._anwResources.findOne({
       where: {
         account: req.username
       }

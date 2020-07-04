@@ -5,13 +5,14 @@ import AccountCharacter from './AccountCharacter';
 import Guild from './Guild';
 import GuildMember from './GuildMember';
 import warehouse from './warehouse';
+import T_VIPList from './T_VIPList';
 
-// Nyx Tables
-import _nyxConfig from './_nyxConfig';
-import _nyxResources from './_nyxResources';
-import _nyxMarket from './_nyxMarket';
-import _nyxAccountLogs from './_nyxAccountLogs';
-import _nyxNews from './_nyxNews';
+// ANW Tables
+import _anwConfig from './_anwConfig';
+import _anwResources from './_anwResources';
+import _anwMarket from './_anwMarket';
+import _anwAccountLogs from './_anwAccountLogs';
+import _anwNews from './_anwNews';
 
 export default {
   Character,
@@ -21,9 +22,10 @@ export default {
   Guild,
   GuildMember,
   warehouse,
-  _nyxConfig,
-  _nyxResources,
-  _nyxMarket,
-  _nyxAccountLogs,
-  _nyxNews
+  T_VIPList,
+  _anwConfig,
+  _anwResources,
+  _anwMarket,
+  _anwAccountLogs,
+  _anwNews
 };

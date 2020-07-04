@@ -43,23 +43,23 @@ export default class Character extends Model<Character> {
   @Column
   Inventory: BinaryType;
 
-  // @Column
-  // MagicList: BinaryType;
+  @Column
+  MagicList: BinaryType;
 
   @Column
   Money: number;
 
-  // @Column
-  // Life: number;
+  @Column
+  Life: number;
 
-  // @Column
-  // MaxLife: number;
+  @Column
+  MaxLife: number;
 
-  // @Column
-  // Mana: number;
+  @Column
+  Mana: number;
 
-  // @Column
-  // MaxMana: number;
+  @Column
+  MaxMana: number;
 
   @Column
   MapNumber: number;
@@ -70,8 +70,8 @@ export default class Character extends Model<Character> {
   @Column
   MapPosY: number;
 
-  // @Column
-  // MapDir: number;
+  @Column
+  MapDir: number;
 
   @Column
   PkCount: number;
@@ -91,47 +91,47 @@ export default class Character extends Model<Character> {
   @Column
   Resets: number;
 
-  @Column
-  GrandResets: number;
+  // @Column
+  // GrandResets: number;
 
-  @Column
-  BanPost: number;
+  // @Column
+  // BanPost: number;
 
-  @Column
-  IsMarried: number;
+  // @Column
+  // IsMarried: number;
 
   @Column
   MarryName: string;
 
-  @Column
-  QuestNumber: number;
+  // @Column
+  // QuestNumber: number;
 
-  @Column
-  QuestMonsters: number;
+  // @Column
+  // QuestMonsters: number;
 
-  @Column
-  QuestInCurse: number;
+  // @Column
+  // QuestInCurse: number;
 
-  @Column
-  QuestInProgress: number;
+  // @Column
+  // QuestInProgress: number;
 
-  @Column
-  IsVip: number;
+  // @Column
+  // IsVip: number;
 
-  @Column
-  VipExpirationTime: number;
+  // @Column
+  // VipExpirationTime: number;
 
-  @Column
-  SkyEventWins: number;
+  // @Column
+  // SkyEventWins: number;
 
-  @Column
-  BanPostTime: string;
+  // @Column
+  // BanPostTime: string;
 
-  @Column
-  BanCharTime: string;
+  // @Column
+  // BanCharTime: string;
 
-  @Column
-  BanChatTime: string;
+  // @Column
+  // BanChatTime: string;
 
   @Column
   HOFWins: number;

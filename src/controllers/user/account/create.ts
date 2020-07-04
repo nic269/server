@@ -28,7 +28,7 @@ const createAccount = async (req: Request, res: Response) => {
       return res.json({ error: 'This E-Mail address is already in use' });
     }
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: {
         name: 'resources'
       }
@@ -39,7 +39,7 @@ const createAccount = async (req: Request, res: Response) => {
     }
 
     await Promise.all([
-      model._nyxResources.create({
+      model._anwResources.create({
         account: username,
         resources: config.value,
         items:
@@ -49,8 +49,9 @@ const createAccount = async (req: Request, res: Response) => {
         memb___id: username,
         memb__pwd: password,
         mail_addr: email,
-        memb_name: Date.now().toString(),
-        reg_ip: req.ip
+        memb_name: username,
+        reg_ip: req.ip,
+        sno__numb: '1111111111111',
       }),
       saveLog({
         account: username,
@@ -62,7 +63,6 @@ const createAccount = async (req: Request, res: Response) => {
 
     res.json({ success: 'Registration successful' });
   } catch (error) {
-    console.log(error.message);
     logger.error({ error, res });
   }
 };

@@ -25,7 +25,7 @@ const reset = async (req: Request, res: Response) => {
         .json({ error: `Such character could not be found.` });
     }
 
-    let config: any = await model._nyxConfig.findOne({
+    let config: any = await model._anwConfig.findOne({
       where: {
         name: 'reset'
       }

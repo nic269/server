@@ -20,7 +20,7 @@ const buyMarketItem = async (req: Request, res: Response) => {
   try {
     const { itemId } = req.body;
 
-    const marketItem = await model._nyxMarket.findOne({
+    const marketItem = await model._anwMarket.findOne({
       where: { index: itemId }
     });
 
@@ -30,7 +30,7 @@ const buyMarketItem = async (req: Request, res: Response) => {
         .json({ error: `This item was just sold, sorry. 😒` });
     }
 
-    const resources = await model._nyxResources.findOne({
+    const resources = await model._anwResources.findOne({
       where: { account: req.username }
     });
 

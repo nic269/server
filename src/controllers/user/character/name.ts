@@ -20,14 +20,14 @@ const changeName = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'This Name is already in use.' });
     }
 
-    const _config = await model._nyxConfig.findOne({
+    const _config = await model._anwConfig.findOne({
       where: { name: 'change_name' }
     });
 
     if (!_config) {
       return res
         .status(400)
-        .json({ error: `Could'nt load change_name config.` });
+        .json({ error: `Couldn't load change_name config.` });
     }
 
     const config = JSON.parse(_config.value);
@@ -74,7 +74,7 @@ const changeName = async (req: Request, res: Response) => {
         .json({ error: `You have to be Offline to change your name.` });
     }
 
-    const resources = await model._nyxResources.findOne({
+    const resources = await model._anwResources.findOne({
       where: { account: req.username }
     });
 
@@ -89,11 +89,17 @@ const changeName = async (req: Request, res: Response) => {
     }
 
     resources.credits -= config.cost;
-    character.Name = newName;
 
     await Promise.all([
       resources.save(),
-      character.save(),
+      model.Character.update(
+        { Name: newName },
+        {
+          where: {
+            AccountID: req.username, Name: name
+          }
+        }
+      ),
       saveLog({
         account: req.username,
         module: 'name',

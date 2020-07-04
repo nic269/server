@@ -21,7 +21,7 @@ const deposit = async (req: Request, res: Response) => {
   try {
     const withdraws: Resource[] = req.body.withdraws;
 
-    const _itemsDB = await model._nyxConfig.findOne({
+    const _itemsDB = await model._anwConfig.findOne({
       where: { name: 'itemsList' }
     });
     const itemsDB = json.parse(_itemsDB.value);
@@ -30,7 +30,7 @@ const deposit = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Config itemsList not found.' });
     }
 
-    const _config = await model._nyxConfig.findOne({
+    const _config = await model._anwConfig.findOne({
       where: { name: 'resources' }
     });
     const config: Resource[] = json.parse(_config.value);
@@ -39,7 +39,7 @@ const deposit = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Config resources not found.' });
     }
 
-    const modelResources = await model._nyxResources.findOne({
+    const modelResources = await model._anwResources.findOne({
       where: { account: req.username }
     });
     const oldResources = json.parse(modelResources.resources);

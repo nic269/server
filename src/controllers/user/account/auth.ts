@@ -23,10 +23,18 @@ const auth = async (req: Request, res: Response) => {
 
     const user = await model.MEMB_INFO.findOne({
       where: { memb___id: username, memb__pwd: password },
+      attributes: {
+        exclude: [
+          // Invalid column for Season iX
+          'VipExpirationTime',
+          'IsVip',
+        ]
+      },
       include: [
-        { model: model._nyxResources },
+        { model: model._anwResources },
         { model: model.MEMB_STAT },
-        { model: model.warehouse }
+        { model: model.warehouse },
+        { model: model.T_VIPList },
       ]
     });
 
@@ -34,7 +42,7 @@ const auth = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid Credentials' });
     }
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: {
         name: 'resources'
       }
@@ -69,7 +77,7 @@ const auth = async (req: Request, res: Response) => {
       }
     );
 
-    await model._nyxResources.update(
+    await model._anwResources.update(
       { resources: JSON.stringify(newResources) },
       {
         where: { account: username }
@@ -77,7 +85,7 @@ const auth = async (req: Request, res: Response) => {
     );
 
     if (!userJSON.resources || !userJSON.resources.resources) {
-      const newRes = await model._nyxResources.create({
+      const newRes = await model._anwResources.create({
         account: user.memb___id,
         resources: JSON.stringify(newResources)
       });

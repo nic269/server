@@ -3,33 +3,37 @@ import { Sequelize } from 'sequelize-typescript';
 // Models
 import model from './models';
 
-let connection: any;
-try {
-  connection = new Sequelize(process.env.SEQUELIZE_URL, {
-    define: {
-      freezeTableName: true,
-      timestamps: false
-    },
-    logging: false,
-    models: [
-      model._nyxConfig,
-      model._nyxResources,
-      model._nyxMarket,
-      model._nyxAccountLogs,
-      model._nyxNews,
-      model.Character,
-      model.AccountCharacter,
-      model.MEMB_STAT,
-      model.MEMB_INFO,
-      model.Guild,
-      model.GuildMember,
-      model.warehouse
-    ]
-  });
+const dbConnect = () => {
+  let connection: any;
+  try {
+    connection = new Sequelize({
+      username: 'sa',
+      password: 'TuanAnh123',
+      host: 'anhn.sytes.net',
+      port: 1433,
+      database: 'MuOnline',
+      dialect: 'mssql',
+      dialectOptions: {
+        options: {
+          trustServerCertificate: true,
+        }
+      },
+      define: {
+        freezeTableName: true,
+        timestamps: false
+      },
+      logging: false,
+      models: Object.values(model),
+    });
 
-  console.log('Database connected...');
-} catch (error) {
-  console.log('Database failed to connect...');
-}
+    console.log('Database connected...');
+  } catch (error) {
+    console.log('Database failed to connect...');
+  }
 
-export default connection;
+  return connection;
+};
+
+const databases = dbConnect();
+
+export default databases;

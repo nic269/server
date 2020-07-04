@@ -20,7 +20,7 @@ const getMany = async (req: Request, res: Response) => {
         WHERE GuildMember.G_Name = Guild.G_Name) AS TotalMembers
       FROM Guild
       ORDER BY TotalResets DESC
-      OFFSET ${(page - 1) * perPage} ROWS
+      OFFSET ${(<number> page - 1) * <number> perPage} ROWS
       FETCH NEXT ${perPage} ROWS ONLY`,
       { type: sequelize.QueryTypes.SELECT }
     );

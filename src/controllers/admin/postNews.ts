@@ -15,7 +15,7 @@ const postNews = async (req: Request, res: Response) => {
 
     const { title, content, author } = req.body;
 
-    await model._nyxNews.create({
+    await model._anwNews.create({
       account: req.username,
       title,
       content,

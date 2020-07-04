@@ -9,10 +9,11 @@ import model from '../../db/models';
 
 const getChars = async (req: Request, res: Response) => {
   try {
-    let { perPage = 20, page = 1, class: Class } = req.query;
+    let { perPage = 20, page = 1 } = req.query;
+    const Class = req.query.class;
     page = Number(page);
     perPage = Number(perPage);
-    Class = Number(Class);
+    // Class = Number(Class);
 
     let where = {};
     if (Class) {
@@ -30,7 +31,25 @@ const getChars = async (req: Request, res: Response) => {
         ['Name', 'ASC']
       ],
       attributes: {
-        exclude: ['Quest', 'Inventory', 'AccountID']
+        exclude: [
+          'Quest',
+          'Inventory',
+          'AccountID',
+          // Invalid column for Season iX
+          'BanCharTime',
+          'BanChatTime',
+          'BanPostTime',
+          'SkyEventWins',
+          'VipExpirationTime',
+          'GrandResets',
+          'BanPost',
+          'IsMarried',
+          'QuestNumber',
+          'QuestMonsters',
+          'QuestInCurse',
+          'QuestInProgress',
+          'IsVip'
+        ]
       },
       include: [
         {

@@ -1,5 +1,5 @@
 {
-  "name": "nyxweb-server-ts",
+  "name": "anw-server",
   "version": "1.0.0",
   "description": "muonline website server-side typescript",
   "main": "dist/bundle.js",
@@ -15,8 +15,8 @@
     "url": "git+https://github.com/Dea7h-cyber/NyxWeb-server-ts.git"
   },
   "keywords": [
-    "nyxmu",
-    "nyxweb",
+    "anwmu",
+    "anweb",
     "muonline",
     "typescript",
     "express",
@@ -34,6 +34,7 @@
     "express-validator": "^6.3.1",
     "global": "^4.4.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.26.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^5.21.3",
     "sequelize-typescript": "^1.1.0",

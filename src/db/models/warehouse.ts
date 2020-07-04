@@ -19,15 +19,15 @@ export default class warehouse extends Model<warehouse> {
   @Column
   Money: number;
 
-  @Default(2)
-  @Column
-  DbVersion: number;
+  // @Default(2)
+  // @Column
+  // DbVersion: number;
 
   @Default(0)
   @Column
   pw: number;
 
-  @Default(1)
-  @Column
-  MultiVault: number;
+  // @Default(1)
+  // @Column
+  // MultiVault: number;
 }

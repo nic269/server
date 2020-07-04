@@ -9,7 +9,7 @@ interface SaveLog {
 }
 
 const saveLog = async ({ account, message, module, hidden, ip }: SaveLog) => {
-  const log = new model._nyxAccountLogs();
+  const log = new model._anwAccountLogs();
   log.account = account;
   log.message = message;
   log.module = module;

@@ -14,7 +14,24 @@ const getOne = async (req: Request, res: Response) => {
     const character = await model.Character.findOne({
       where: { Name },
       attributes: {
-        exclude: ['Quest', 'AccountID']
+        exclude: [
+          'Quest',
+          'AccountID',
+          // Invalid column for Season iX
+          'BanCharTime',
+          'BanChatTime',
+          'BanPostTime',
+          'SkyEventWins',
+          'VipExpirationTime',
+          'GrandResets',
+          'BanPost',
+          'IsMarried',
+          'QuestNumber',
+          'QuestMonsters',
+          'QuestInCurse',
+          'QuestInProgress',
+          'IsVip'
+        ]
       },
       include: [
         {
@@ -55,6 +72,7 @@ const getOne = async (req: Request, res: Response) => {
     ].forEach(key => delete result[key]);
 
     result.Inventory = result.Inventory.toString('hex');
+    result.MagicList = result.MagicList.toString('hex');
 
     res.json(result);
   } catch (error) {

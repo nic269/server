@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table
-export default class _nyxResources extends Model<_nyxResources> {
+export default class _anwResources extends Model<_anwResources> {
   @PrimaryKey
   @Column
   account: string;

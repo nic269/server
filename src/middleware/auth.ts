@@ -11,7 +11,7 @@ import model from '../db/models';
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('nyxAuthToken');
+    const token = req.header('anwAuthToken');
 
     let decode;
     try {

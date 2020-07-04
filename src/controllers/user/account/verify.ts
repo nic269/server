@@ -19,23 +19,23 @@ interface Resource {
 
 const verify = async (req: Request, res: Response) => {
   try {
-    const token = req.header('nyxAuthToken');
+    const token = req.header('anwAuthToken');
 
     if (!token) {
       return res.json({ error: 'Not authorized' });
     }
 
     const decode = jwt.verify(token, process.env.JWT_KEY);
-
     const user = await model.MEMB_INFO.findOne({
       where: {
         memb___id: decode.username,
         jwt_token: token
       },
       include: [
-        { model: model._nyxResources },
+        { model: model._anwResources },
         { model: model.MEMB_STAT },
-        { model: model.warehouse }
+        { model: model.warehouse },
+        { model: model.T_VIPList },
       ],
       attributes: [
         'memb___id',
@@ -43,8 +43,6 @@ const verify = async (req: Request, res: Response) => {
         'sno__numb',
         'bloc_code',
         'ctl1_code',
-        'IsVip',
-        'VipExpirationTime',
         'reg_ip',
         'admin_lvl'
       ]
@@ -54,7 +52,7 @@ const verify = async (req: Request, res: Response) => {
       return res.status(403).json({ error: 'Not authorized' });
     }
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: {
         name: 'resources'
       }
@@ -83,7 +81,7 @@ const verify = async (req: Request, res: Response) => {
       }
     );
 
-    await model._nyxResources.update(
+    await model._anwResources.update(
       { resources: JSON.stringify(newResources) },
       {
         where: { account: decode.username }
@@ -91,12 +89,12 @@ const verify = async (req: Request, res: Response) => {
     );
 
     if (!userJSON.resources || !userJSON.resources.resources) {
-      const nyxRes = await model._nyxResources.create({
+      const anwRes = await model._anwResources.create({
         account: user.memb___id,
         resources: JSON.stringify(newResources)
       });
 
-      userJSON.resources = nyxRes.toJSON();
+      userJSON.resources = anwRes.toJSON();
     }
 
     userJSON.resources.list = JSON.stringify(newResources);

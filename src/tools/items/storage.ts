@@ -1,14 +1,17 @@
 import hexDecode from './decode';
 
+const ITEM_INDICATOR = 64; // lower version use 32
+const HEX_ARRAY_LENGTH = 240; // lower version use 128
+
 const generateSlotsHolders = (
   itemsHex: string,
   oneToOneSlot: boolean | number = false,
   itemsList: any
 ): number[][] | false => {
   const slots: number[][] = [];
-  const hexArray = itemsHex.toLowerCase().match(/[a-f0-9]{32}/g);
+  const hexArray = itemsHex.toLowerCase().match(/[a-f0-9]{64}/g); // 64 === ITEM_INDICATOR
 
-  if (hexArray.length !== 120) {
+  if (hexArray.length !== HEX_ARRAY_LENGTH) {
     return false;
   }
 
@@ -28,7 +31,7 @@ const generateSlotsHolders = (
       const row = Math.floor(i / 8);
       const column = Math.floor(i - row * 8);
 
-      if (hex !== 'f'.repeat(32)) {
+      if (hex !== 'f'.repeat(ITEM_INDICATOR)) {
         const item = hexDecode(hex);
         const itemData =
           item && itemsList[item.group] && itemsList[item.group].items[item.id]

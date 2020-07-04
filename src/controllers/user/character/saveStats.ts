@@ -11,11 +11,11 @@ import model from '../../../db/models';
 const saveStats = async (req: Request, res: Response) => {
   try {
     const {
-      Strength,
-      Dexterity,
-      Vitality,
-      Energy,
-      Leadership,
+      Strength = 0,
+      Dexterity = 0,
+      Vitality = 0,
+      Energy = 0,
+      Leadership = 0,
       Name
     } = req.body;
 
@@ -44,7 +44,7 @@ const saveStats = async (req: Request, res: Response) => {
       return res.status(400).json({ error: `This character is Online` });
     }
 
-    const config = await model._nyxConfig.findOne({
+    const config = await model._anwConfig.findOne({
       where: { name: 'stats' }
     });
 

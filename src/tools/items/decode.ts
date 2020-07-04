@@ -1,7 +1,10 @@
+const ITEM_INDICATOR = 64; // lower version use 32
+
 const hex2dec = (hex: string) => parseInt(hex, 16);
 
 const hexDecode = (hex: string) => {
-  if (!/^[a-f0-9]{32}$/i.test(hex) || hex.toLowerCase() === 'f'.repeat(32)) {
+  // 64 in the patern === ITEM_INDICATOR
+  if (!/^[a-f0-9]{64}$/i.test(hex) || hex.toLowerCase() === 'f'.repeat(ITEM_INDICATOR)) {
     return false;
   }
 
@@ -19,7 +22,7 @@ const hexDecode = (hex: string) => {
   const skill = !!((opts >> 7) & 0b1);
   const options = (opts & 0b11) | (((exos >> 6) & 0b1) << 2);
   const ancient = hex2dec(hex.substr(16, 2));
-  const serial = hex.substr(6, 8);
+  const serial = hex.substr(6, 8) + hex.substr(32, 8); // lower version doesn't have "hex.substr(32, 8)"
   const durability = hex2dec(hex.substr(4, 2));
   const pink = !!hex2dec(hex.substr(19, 1));
   const harmony = {

@@ -10,7 +10,7 @@ import model from '../../db/models';
 
 const getConfig = async (req: Request, res: Response) => {
   try {
-    const config = await model._nyxConfig.findAll();
+    const config = await model._anwConfig.findAll();
 
     if (!config) {
       return res.status(400).json({ error: 'Could not load configuration' });

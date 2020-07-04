@@ -7,7 +7,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table
-export default class _nyxNews extends Model<_nyxNews> {
+export default class _anwNews extends Model<_anwNews> {
   @AutoIncrement
   @PrimaryKey
   @Column
